@@ -162,7 +162,7 @@ abstract class CIMAbstractResponse extends AbstractResponse
             $e = get_object_vars($element);
 
             if (!empty($e)) {
-                $arr[$tag][] = $element instanceof \SimpleXMLElement ? $this->xml2array($element) : $e;
+                $arr[$tag][] = is_a($element) ? $this->xml2array($element) : $e;
             } else {
                 $arr[$tag] = trim($element);
             }
