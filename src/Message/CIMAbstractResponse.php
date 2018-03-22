@@ -155,17 +155,23 @@ abstract class CIMAbstractResponse extends AbstractResponse
      */
     public function xml2array(\SimpleXMLElement $xml)
     {
-        $arr = array();
+        $arr = [];
 
-        foreach ($xml as $element) {
-            $tag = $element->getName();
-            $e = get_object_vars($element);
-
-            if (!empty($e)) {
-                $arr[$tag][] = is_a($element) ? $this->xml2array($element) : $e;
-            } else {
-                $arr[$tag] = trim($element);
+        if(count($xml)) {
+            foreach ($xml as $element) {
+                $tag = $element->getName();
+                $e = get_object_vars($element);
+                
+                if(count($e) == 1 && is_int(key($e))) {
+                    $arr[$tag] = trim($element);
+                } elseif(!empty($e)) {
+                    $arr[$tag][] = $element instanceof \SimpleXMLElement ? $this->xml2array($element) : $e;
+                } else {
+                    $arr[$tag] = trim($element);
+                }
             }
+        } else {
+            return trim($xml);
         }
 
         return $arr;
