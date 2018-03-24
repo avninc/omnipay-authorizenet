@@ -160,7 +160,7 @@ abstract class SIMAbstractRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $data)->send();
+        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $data);
 
         return $this->response = new AIMResponse($this, $httpResponse->getBody());
     }
